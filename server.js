@@ -1,3 +1,4 @@
+/** 使用http创建一个服务器，并让其监听3000端口 */
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
