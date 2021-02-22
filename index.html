@@ -4,11 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <!-- <link rel="prefetch" href="./script.js"> -->
-    <link rel="preload" href="./script.js" as="script">
+    <link rel="prefetch" href="script.js">
+    <!-- <link rel="preload" href="./script.js" as="script"> -->
 </head>
 <body>
     haha
     <script src="./main.js"></script>
+
+    <script>
+        /*
+        关于webpack的prefech和preload提升性能的内容暂时未看
+        prefetch 和 preload 及 webpack 的相关处理
+使用预取和预加载是网站性能和用户体验提升的一个很好的途径，本文介绍了使用 prefetch 和 prefetch 进行预取和预加载的方法，并使用 webpack 进行实现
+
+Link 的链接类型
+<link> 标签的 rel 属性可以定义链接类型，prefetch 是其中的一种，与 href 配合使用可以预取或预加载对应资源
+<link rel="prefetch" herf="URL">
+
+preload 是另外一种类型，同样用 href 定义资源地址，但其除了预取外，还会对资源进行解析，所以还要增加属性 as，说明资源的类型
+<link rel="preload" href="URL" as="MIME_TYPE">
+
+预取资源
+prefetch 表示用户在接下来的浏览中（例如在下一个页面），有可能用到对应资源，提示浏览器要在闲时获取对应资源
+
+prefetch.html 定义了一个 rel 为 prefetch 的链接
+
+<html>
+<head>
+<title>Prefetch</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="prefetch" href="script.js">
+</head>
+<body>
+&lt;script src="main.js"&gt;&lt;/script&gt;
+</body>
+</html>
+
+main.js 创建了一个按钮，并绑定了点击事件
+
+let button = document.createElement('button');
+button.innerHTML = 'Add Script';
+button.addEventListener('click', e => {
+  let script = document.createElement("script");
+  script.src = "script.js";
+  document.head.appendChild(script);
+});
+document.body.appendChild(button);
+
+
+script.js 只是简单的打印了一下
+
+console.log('script run');
+运行服务器（也可在 package.json 中增加 server 脚本）
+
+npx http-server
+
+访问 http://localhost:8080 并导航至 static 中，点击 prefetch.html，或者直接访问线上页面，初始状态下，查看控制台的网络选项卡下的内容如下（不要勾选 Disable Cache，点击右侧齿轮，勾选 Use large request rows）
+
+
+script.js 被 fetch 下来，size 列鼠标悬浮后显示文字： 1.3KB transfered over network， resource size: 0B. 1.3kb表示下载的字节大小，0 B 表示解析的字节大小（即目前并没有解析）
+控制台是空的，即脚本没有运行
+点击页面上的 Add Script，会在页面增加地址为 script.js 的 <script> 标签，此时网络选项卡会增加以下内容
+
+
+下载字节量为 (prefetch cache) ，即直接从预取缓存获取资源，下面的解析后的字节不再为 0
+控制台打印出脚本中的调试内容，即这时脚本才被解析并运行
+预加载资源
+preload 表示用户在当前的浏览中（往往是在当前页面），极有可以可能用到对应资源，提示浏览器要优先获取对应资源
+
+将 prefetch.html 的 link 标签的 prefetch 改为 preload，并增加资源类型 as 为 script，即得 preload.html
+
+<link rel="preload" href="script.js" as="script">
+访问本地服务器对应的 prefetch.html，或者直接访问线上页面，初始状态下，查看控制台的网络选项卡下的内容如下
+
+
+script.js 被优先下载， size 列的解压字节不再为 0，即 preload 除了把脚本下载了下来，还进行了解析
+控制台目前仍为空，即脚本虽然被解析，但并没有运行
+点击 Add Script，网络选项卡并没有增加任何记录，但是控制台输出了脚本的打印内容
+
+因为脚本已经解析完成，所以连从缓存获取都不需要了，直接运行即可
+如果没有在 3 秒内点击 Add Script，控制台会进行警告，因为没有及时使用应该优先加载的资源
+The resource chanvinxiao.com/demo/html/s… was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate as value and it is preloaded intentionally.*/
+    </script>
 </body>
 </html>
